@@ -42,17 +42,16 @@ module.exports.getSelectedBlogPost = (req, res) => {
 };
 
 module.exports.getAllBlogPosts = (req, res) => {
-	return Blog.find({})
-	.then(blogs => {
-		if(blogs.length > 0){
-			return res.status(200).send({ blog });
-		} else {
-			return res.status(404).send({ message: "No blogs found." });
-		}
-	})
-	.catch(error => errorHandler(error, req, res));
+    return Blog.find({})
+    .then(blogs => {
+        if(blogs.length > 0){
+            return res.status(200).send({ blogs }); 
+        } else {
+            return res.status(404).send({ message: "No blogs found." });
+        }
+    })
+    .catch(error => errorHandler(error, req, res));
 };
-
 
 module.exports.updateBlogPost = (req, res) => {
     const userId = req.user.id; 
