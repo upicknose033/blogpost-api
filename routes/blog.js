@@ -9,11 +9,11 @@ router.post("/createBlogPost", verify, blogController.createBlogPost);
 
 router.get("/getAllBlogPosts", blogController.getAllBlogPosts);
 
-router.get("/getSelectedBlogPost", blogController.getSelectedBlogPost); 
+router.get("/getSelectedBlogPost/:id", blogController.getSelectedBlogPost); 
 
-router.put("/updateBlogPost", verify, blogController.updateBlogPost);
+router.put("/updateBlogPost/:id", verify, blogController.updateBlogPost);
 
-router.delete("/deleteBlogPost", verify, verifyAdmin, blogController.deleteBlogPost);
+router.delete("/deleteBlogPost/:id", verify, verifyAdmin, blogController.deleteBlogPost);
 
 
 
