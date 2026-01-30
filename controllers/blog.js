@@ -1,6 +1,5 @@
 const Blog = require('../models/Blog');
 const { errorHandler } = require('../auth');
-const { blogId } = req.body;
 
 
 module.exports.createBlogPost = (req, res) => {
@@ -8,6 +7,7 @@ module.exports.createBlogPost = (req, res) => {
         title: req.body.title,
         content: req.body.content,
         authorInfo: req.body.authorInfo,
+        author: req.user.id,
         date: new Date() 
     });
 
@@ -55,11 +55,11 @@ module.exports.getAllBlogPosts = (req, res) => {
 module.exports.updateBlogPost = (req, res) => {
     const userId = req.user.id; 
 
-    Blog.findById(req.params.blogId)
+    Blog.findById(req.params.id) 
     .then(blog => {
         if (!blog) return res.status(404).send({message: "Blog not found"});
         
-        if (blog.author.toString() !== userId) {
+        if (blog.author && blog.author.toString() !== userId) {
             return res.status(403).send({message: "Unauthorized to edit this post"});
         }
 
@@ -75,16 +75,15 @@ module.exports.updateBlogPost = (req, res) => {
     .catch(err => errorHandler(err, req, res));
 };
 
-
 module.exports.deleteBlogPost = (req, res) => {
     const userId = req.user.id;
-    const blogId = req.params.blogId; 
+    const blogId = req.params.id; 
 
     Blog.findById(blogId)
     .then(blog => {
         if (!blog) return res.status(404).send({ message: 'Blog does not exist' });
 
-        if (blog.author.toString() !== userId) {
+        if (blog.author && blog.author.toString() !== userId) {
             return res.status(403).send({ message: "Unauthorized to delete this post" });
         }
 

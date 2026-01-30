@@ -13,6 +13,11 @@ const blogSchema = new mongoose.Schema({
 		type: String,
 		required: [true, 'Author Information is Required']
 	},
+	author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: [true, 'User ID is Required']
+    },
 	date: {
 		type: Date,
 		default: Date.now
