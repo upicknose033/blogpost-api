@@ -1,5 +1,6 @@
 const Blog = require('../models/Blog');
 const { errorHandler } = require('../auth');
+const { blogId } = req.body;
 
 
 module.exports.createBlogPost = (req, res) => {
@@ -27,18 +28,16 @@ module.exports.createBlogPost = (req, res) => {
 };
 
 module.exports.getSelectedBlogPost = (req, res) => {
-	const { blogId } = req.body;
+    const blogId = req.params.id; 
 
-	Blog.findById(blogId)
-	.then(blog => {
-		if(blog){
-			return res.status(200).send(blog);
-		} else {
-			return res.status(404).send({ message: "Blog not found" })
-		}
-
-	})
-	.catch(error => errorHandler(error, req, res));
+    return Blog.findById(blogId)
+        .then(blog => {
+            if (!blog) {
+                return res.status(404).send({ message: "Blog not found" });
+            }
+            return res.status(200).send({ result: blog });
+        })
+        .catch(error => errorHandler(error, req, res));
 };
 
 module.exports.getAllBlogPosts = (req, res) => {
